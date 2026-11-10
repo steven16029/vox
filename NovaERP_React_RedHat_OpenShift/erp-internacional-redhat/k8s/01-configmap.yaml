@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: novaerp-frontend-config
+  namespace: novaerp
+data:
+  APP_NAME: "NovaERP Global"
+  DEFAULT_LOCALE: "es-CO"
+  DEFAULT_CURRENCY: "USD"
+  # URL del backend API (ajustar cuando se despliegue el servicio)
+  API_BASE_URL: "/api"

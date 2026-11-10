@@ -1,0 +1,23 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: novaerp-frontend
+  namespace: novaerp
+spec:
+  runPolicy: Serial
+  source:
+    type: Git
+    git:
+      uri: https://github.com/USUARIO/REPOSITORIO.git
+    contextDir: /
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+  output:
+    to:
+      kind: ImageStreamTag
+      name: novaerp-frontend:1.0.0
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange

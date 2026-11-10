@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: novaerp-frontend
+  namespace: novaerp
+  labels:
+    app: novaerp-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: novaerp-frontend
+  template:
+    metadata:
+      labels:
+        app: novaerp-frontend
+    spec:
+      containers:
+        - name: frontend
+          # Reemplazar por la imagen publicada en el registry de OpenShift
+          image: image-registry.openshift-image-registry.svc:5000/novaerp/novaerp-frontend:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: novaerp-frontend-config
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault

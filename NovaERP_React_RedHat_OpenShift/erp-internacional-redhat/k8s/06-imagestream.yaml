@@ -1,0 +1,8 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: novaerp-frontend
+  namespace: novaerp
+spec:
+  lookupPolicy:
+    local: true
